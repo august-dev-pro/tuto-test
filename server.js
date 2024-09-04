@@ -1,47 +1,21 @@
-const http = require('http');
-const app = require('./app');
-
-const normalizePort = val => {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-const errorHandler = error => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges.');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use.');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
-
-const server = http.createServer(app);
-
-server.on('error', errorHandler);
-server.on('listening', () => {
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind);
+Object.defineProperty(exports, "__esModule", { value: true });
+const app_1 = __importDefault(require("./app"));
+const http_1 = __importDefault(require("http"));
+const PORT = parseInt(process.env.PORT, 10) || 5000;
+// Création du serveur HTTP
+const server = http_1.default.createServer(app_1.default);
+//lencement du server
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-
-server.listen(port);
+// Gestion des événements du serveur
+server.on("error", (error) => {
+    console.error("Server error:", error.message);
+});
+server.on("listening", () => {
+    console.log("Server is listening...");
+});
